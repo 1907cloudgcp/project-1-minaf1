@@ -12,49 +12,75 @@ async function setUpImages(){
     images.push(document.getElementById('carousel-1'))
     images.push(document.getElementById('carousel-2'))
     images.push(document.getElementById('carousel-3'))
+    images.push(document.getElementById('carousel-4'))
+    images.push(document.getElementById('carousel-5'))
+    
+    let sites = ["images/penguins.jpg", "images/antarcticamountain.jpg", "images/iceburg.jpg"];
+
     images.forEach(async (value, index)=>{
         //index is the numbered image in the carousel if that matters to you
-        let response = await fetch("YOURCLOUDFUNCTION FOR GETTING AN IMAGE")
-        
-    if(response.status <200 || response.status > 299){
-        value.src = "images/penguins.jpg"
-    } else {
-        data =  await response.body.json()
-        value.src = data["WHATEVER YOU NAMED THE FIELD IN YOUR RETURN"]
-    }
+        //let response = await fetch("YOURCLOUDFUNCTION FOR GETTING AN IMAGE")
+        let response = await fetch("https://us-central1-cloudadmingcpdemosmina.cloudfunctions.net/download_image_blobs")
+	    .then(r => r.json());
+
+        if(response.status <200 || response.status > 299){
+            value.src = "images/penguins.jpg"
+        } 
+        else {
+            //data =  await response.body.json()
+
+            if (index < 3){
+                value.src = sites[index]
+            }else{
+            	value.src = response[index-3]
+  	    }
+	    console.log(value.src)
+        }
     })
 }
 setUpImages()
 
-document.getElementById('calc-label').innerText = "YOU CALC LABEL TEXT"
+document.getElementById('calc-label').innerText = "Enter a number"
+document.getElementById('calc-input').type = 'number'
 
-document.getElementById('calc-input').type = 'text' || "YOUR INPUT TYPE, REPLACE TEXT"
-
-function calcSubmit(event){
+async function calcSubmit(event){
     event.preventDefault()
-    fetch("YOUR CALC CLOUD FUNCTION URL", {
+    
+    let result = await fetch("https://us-central1-cloudadmingcpdemosmina.cloudfunctions.net/post_calculation", {
         method: 'POST',
-        body: JSON.stringify(document.getElementById('calc-input').value)
-    })
+        headers: {	
+            'Content-Type': 'application/json'
+	},
+	body: JSON.stringify(document.getElementById('calc-input').value) 
+ }).then(r => r.json());
+
+    console.log('result:' + result)
+
     if(document.getElementById('calc-input').type === 'number'){
         document.getElementById('calc-input').value = 0
     } else {
         document.getElementById('calc-input').value = ''
     }
+    let data = await result.toString()
+    console.log('data:'+data)
 
+    let p = document.getElementById('answer')
+    p.innerText = 'Your result is: ' + data.toString()
 }
 
 
 
 async function buildTable (){
-    let objectResponse = await fetch("YOUR CLOUD FUNCTION URL FOR GETTING DATA")
+    let objectResponse = await fetch("https://us-central1-cloudadmingcpdemosmina.cloudfunctions.net/data_table_query")
+.then(r => r.json());
+
     if(objectResponse.status <200 || objectResponse.status >299){
         let error =document.createElement('p')
         error.innerText = "Fetch Failed"
         document.getElementById('footer-table').appendChild(error)
     }else {
-        let objectList = await objectResponse.body.json()
-       
+        //let objectList = await objectResponse.body.json()
+        let objectList = objectResponse
         let headRow = document.createElement('tr')
         document.getElementById('object-table-head').appendChild(headRow)
         for(key in dbObject){
@@ -110,7 +136,7 @@ function buildForm(){
 
 function createObject(event){
     event.preventDefault()
-    console.log(event);
+    
     let newObj = {}
     for(key in dbObject){
         let input = document.getElementById(`${key}id`)
@@ -122,8 +148,11 @@ function createObject(event){
         }
     }
     
-    fetch('YOUR CLOUD FUNCTION URL FOR CREATING A NEW OBJECT',{
+    fetch('https://us-central1-cloudadmingcpdemosmina.cloudfunctions.net/insert_data_datastore',{
         method: 'POST',
+	headers:{
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify(newObj)
     })
 }

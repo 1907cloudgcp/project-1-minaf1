@@ -7,27 +7,36 @@
 </head>
 <body>
     <h1 class="header-container" id="header">REV ANTARTCTICA</h1>
-    <div class="calc-container">
+    <div class="calc-container"  id="calc-container">
         <form onsubmit="calcSubmit(event)">
             <label for="calc-input" id="calc-label"></label>
             <input id="calc-input"/>
         </form>
+	<p id="answer"></p>
     </div>
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
           <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
           <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
           <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+          <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+          <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
         </ol>
         <div class="carousel-inner">
           <div class="carousel-item active" >
-            <img src="images/penguins.jpg" id="carousel-1" class="d-block w-100" alt="...">
+            <img id="carousel-1" class="d-block w-100" alt="...">
           </div>
           <div class="carousel-item" >
-            <img src="images/iceburg.jpg" id="carousel-2" class="d-block w-100" alt="...">
+            <img id="carousel-2" class="d-block w-100" alt="...">
           </div>
           <div class="carousel-item" >
-            <img src="images/antarcticamountain.jpg" id="carousel-3" class="d-block w-100" alt="...">
+            <img id="carousel-3" class="d-block w-100" alt="...">
+          </div>
+	  <div class="carousel-item" >
+            <img id="carousel-4" class="d-block w-100" alt="...">
+          </div>
+		  <div class="carousel-item" >
+            <img id="carousel-5" class="d-block w-100" alt="...">
           </div>
         </div>
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
