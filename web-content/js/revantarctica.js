@@ -4,7 +4,7 @@ let dbObject = {
     techTrack:''
 }
 
-document.getElementById('header').innerText = "Revantarctica Unlimited!";
+document.getElementById('header').innerText = "YOUR TITLE GOES HERE";
 
 //this assumes your cloud function will return a value named address with the address to an image, in a cloud storage bucket
 async function setUpImages(){
@@ -40,7 +40,6 @@ async function setUpImages(){
 }
 setUpImages()
 
-
 document.getElementById('calc-label').innerText = "Enter a number"
 document.getElementById('calc-input').type = 'number'
 
@@ -68,37 +67,6 @@ async function calcSubmit(event){
     let p = document.getElementById('answer')
     p.innerText = 'Your result is: ' + data.toString()
 }
-
-
-
-document.getElementById('myFunction-label').innerText = "Enter a number"
-document.getElementById('calc-label').innerText = "Enter a number"
-async function calcMyFunction(event){
-	event.preventDefault()
-	let result = await fetch("https://us-central1-cloudadmingcpdemosmina.cloudfunctions.net/get_primes", {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({"body": document.getElementById('myFunction-input').value})
-	}).then(r => r.json());
-
-	console.log('result:' + result)
-	if(document.getElementById('myFunction-input').type === 'number'){
-		document.getElementById('myFunction-input').value = 0
-	}else {
-		document.getElementById('myFunction-input').value = ''
-	}
-	
-	let data = await result.toString()
-	console.log('data:'+data)
-
-	let p = document.getElementById('myFunction-paragraph')
-	p.innerText = 'Primes:' + data.toString()
-}
-
-
-
 
 
 
