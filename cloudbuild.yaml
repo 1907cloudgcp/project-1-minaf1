@@ -1,5 +1,3 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['pull', 'gcr.io/$PROJECT_ID/latest-image']
-  env:
-  - 'PROJECT_ID=$PROJECT_ID'
+  args: ['pull', 'gcr.io/cloudadmingcpdemosmina/latest-image']
